@@ -125,6 +125,14 @@
               "devServerTarget": "lbssnd:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "/lbssnd/",
+            "name": "Matija Pevec",
+            "email": "pevec@live.com"
+          }
         }
       }
     }
