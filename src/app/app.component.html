@@ -35,7 +35,7 @@
     </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 px-4 py-2 gap-2">
       <ng-container *ngFor="let sound of fullSounds">
-        <button class="relative bg-blue-400 text-white px-2 py-6 rounded"
+        <button class="relative bg-blue-400 text-white px-2 py-6 rounded lg:text-xl"
                 [class]="(currPlaying$ | async) === sound ? 'bg-green-500' : ''"
                 (click)="play(sound)">
           {{ sound.name }}
@@ -54,6 +54,7 @@
 
 <ng-container *ngIf="play$ | async"></ng-container>
 <ng-container *ngIf="escape$ | async"></ng-container>
+<ng-container *ngIf="appUpdate$ | async"></ng-container>
 
 <ng-template #closeIcon>
   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

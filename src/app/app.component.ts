@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {BehaviorSubject, combineLatest, EMPTY, from, fromEvent, Observable, of, Subject} from 'rxjs';
 import {debounceTime, filter, map, shareReplay, switchMap, take, tap} from 'rxjs/operators';
+import {SwUpdate} from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +9,12 @@ import {debounceTime, filter, map, shareReplay, switchMap, take, tap} from 'rxjs
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
+  constructor(private updates: SwUpdate) {
+  }
   isolatedSounds: Sound[] = [
     AppComponent.createSound('Checkout 🤑', 'checkout.mp3'),
     AppComponent.createSound('Woooowww 🎉', 'wow.mp3'),
-    AppComponent.createSound('AAAAAAAA 🤬️', 'waaaa.mp3'),
+    AppComponent.createSound('AAAAAAAA 😱️', 'waaaa.mp3'),
     AppComponent.createSound('WUT?! 😨️️️️', 'alert.mp3'),
     AppComponent.createSound('TumTum 📉️️️️', 'tumtumdown.mp3'),
     AppComponent.createSound('Dump it 📉', 'dumpit.mp3'),
@@ -68,6 +71,14 @@ export class AppComponent implements AfterViewInit {
   escape$ = fromEvent(document, 'keyup').pipe(
     filter(e => (e as KeyboardEvent).key === 'Escape'),
     tap(() => this.stop())
+  );
+
+  appUpdate$ = this.updates.available.pipe(
+    switchMap(() => {
+      window.alert('New version available. The app will be reloaded.');
+      return from(this.updates.activateUpdate());
+    }),
+    tap(() => document.location.reload())
   );
 
   static createSound(name: string, fileName: string): Sound {
