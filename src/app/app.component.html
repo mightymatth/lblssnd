@@ -1,5 +1,5 @@
 <!-- Backdrop -->
-<div class="absolute h-full w-full z-0 bg-green-100"
+<div class="absolute h-full w-full z-0"
      *ngIf="currPlaying$ | async"
      (click)="stop()">
 </div>
@@ -12,30 +12,53 @@
     Sound Library
   </h2>
 
-  <div>
-    <main class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 p-4 gap-2">
-      <ng-container *ngFor="let sound of sounds">
+  <main class="z-10">
+    <h3 class="px-4 py-2 text-sm sticky top-0 z-20 bg-blue-50">
+      Isolated
+    </h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 px-4 py-2 gap-2">
+      <ng-container *ngFor="let sound of isolatedSounds">
         <button class="relative bg-blue-400 text-white px-2 py-6 rounded"
                 [class]="(currPlaying$ | async) === sound ? 'bg-green-500' : ''"
                 (click)="play(sound)">
           {{ sound.name }}
           <button class="absolute w-1 h-1 top-1 right-4 rounded-full"
                   (click)="stop()" *ngIf="(currPlaying$ | async) === sound">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clip-rule="evenodd"/>
-            </svg>
+            <ng-container *ngTemplateOutlet="closeIcon"></ng-container>
           </button>
         </button>
       </ng-container>
-    </main>
-  </div>
-</div>
+    </div>
 
+    <h3 class="px-4 py-2 text-sm sticky top-0 z-20 bg-blue-50">
+      Full
+    </h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 px-4 py-2 gap-2">
+      <ng-container *ngFor="let sound of fullSounds">
+        <button class="relative bg-blue-400 text-white px-2 py-6 rounded"
+                [class]="(currPlaying$ | async) === sound ? 'bg-green-500' : ''"
+                (click)="play(sound)">
+          {{ sound.name }}
+          <button class="absolute w-1 h-1 top-1 right-4 rounded-full"
+                  (click)="stop()" *ngIf="(currPlaying$ | async) === sound">
+            <ng-container *ngTemplateOutlet="closeIcon"></ng-container>
+          </button>
+        </button>
+      </ng-container>
+    </div>
+  </main>
+</div>
 
 <audio #player class="invisible" preload="metadata">
 </audio>
 
 <ng-container *ngIf="play$ | async"></ng-container>
 <ng-container *ngIf="escape$ | async"></ng-container>
+
+<ng-template #closeIcon>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+    <path fill-rule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+          clip-rule="evenodd"/>
+  </svg>
+</ng-template>

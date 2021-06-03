@@ -8,18 +8,21 @@ import {debounceTime, filter, map, shareReplay, switchMap, take, tap} from 'rxjs
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  sounds: Sound[] = [
-    AppComponent.createSound('Woooowww 🎉', 'wow.mp3'),
+  isolatedSounds: Sound[] = [
     AppComponent.createSound('Checkout 🤑', 'checkout.mp3'),
-    AppComponent.createSound('Checkout Woooowww 🤑🎉', 'checkoutwow.mp3'),
+    AppComponent.createSound('Woooowww 🎉', 'wow.mp3'),
     AppComponent.createSound('AAAAAAAA 🤬️', 'waaaa.mp3'),
     AppComponent.createSound('WUT?! 😨️️️️', 'alert.mp3'),
     AppComponent.createSound('TumTum 📉️️️️', 'tumtumdown.mp3'),
-    AppComponent.createSound('Pocket money 💸', 'pocketmoney.mp3'),
-    AppComponent.createSound('10%/toilet 🚽', '10perc-toilet.mp3'),
     AppComponent.createSound('Dump it 📉', 'dumpit.mp3'),
     AppComponent.createSound('Did he buy le dip?', 'buysdip.mp3'),
     AppComponent.createSound('Finish him', 'finishhim.mp3'),
+    AppComponent.createSound('Pocket money 💸', 'pocketmoney.mp3'),
+    AppComponent.createSound('10%/toilet 🚽', '10perc-toilet.mp3'),
+  ];
+
+  fullSounds: Sound[] = [
+    AppComponent.createSound('Checkout Woooowww 🤑🎉', 'checkoutwow.mp3'),
     AppComponent.createSound('Dump it 📉 [full]', 'dumpit-pokemon.mp3'),
     AppComponent.createSound('Buy le dip [full]', 'buysdip-finishhim.mp3'),
     AppComponent.createSound('Addicted Jimmy', 'addictedijmmy.mp3'),
