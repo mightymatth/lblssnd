@@ -50,7 +50,7 @@ export class AppComponent implements AfterViewInit {
   );
 
   currPlaying$ = combineLatest([this.isPlaying$, this.play$]).pipe(
-    debounceTime(20), // avoid play/stop flickering
+    debounceTime(20), // avoids play/stop flickering
     map(([isPlaying, sound]) => isPlaying ? sound : undefined),
     shareReplay(1)
   );
@@ -82,19 +82,19 @@ export class AppComponent implements AfterViewInit {
     this.playSub.next(sound);
   }
 
+  stop(): void {
+    if (this.isPlayingSub.value) {
+      this.player.nativeElement.pause();
+      this.player.nativeElement.currentTime = 0;
+    }
+  }
+
   private playAudio(): Promise<void> {
     if (!this.isPlayingSub.value) {
       return this.player.nativeElement.play();
     }
 
     return new Promise(resolve => resolve());
-  }
-
-  stop(): void {
-    if (this.isPlayingSub.value) {
-      this.player.nativeElement.pause();
-      this.player.nativeElement.currentTime = 0;
-    }
   }
 }
 

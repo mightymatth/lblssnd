@@ -1,6 +1,6 @@
 <!-- Backdrop -->
 <div class="absolute h-full w-full z-0 bg-green-100"
-     *ngIf="isPlaying$ | async"
+     *ngIf="currPlaying$ | async"
      (click)="stop()">
 </div>
 
@@ -36,5 +36,6 @@
 
 <audio #player class="invisible" preload="metadata">
 </audio>
+
 <ng-container *ngIf="play$ | async"></ng-container>
 <ng-container *ngIf="escape$ | async"></ng-container>
