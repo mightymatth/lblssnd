@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import {BehaviorSubject, combineLatest, from, of, Subject} from 'rxjs';
-import {debounceTime, filter, map, shareReplay, switchMap, take} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, from, fromEvent, of, Subject} from 'rxjs';
+import {debounceTime, filter, map, shareReplay, switchMap, take, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +8,16 @@ import {debounceTime, filter, map, shareReplay, switchMap, take} from 'rxjs/oper
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
+  sounds: Sound[] = [
+    AppComponent.createSound('Woooowww 🎉', 'lowbudget-wow.mp3'),
+    AppComponent.createSound('AAAAAAAA 🤬️', 'lowbudget-waaaa.mp3'),
+    AppComponent.createSound('Alert ❗️️️️', 'lowbudget-alert.mp3'),
+    AppComponent.createSound('Pocket money 💸', 'lowbudget-pocketmoney.mp3'),
+    AppComponent.createSound('10%/toilet 🚽', 'lowbudget-10perc-toilet.mp3'),
+    AppComponent.createSound('Dump it 📉', 'lowbudget-dumpit.mp3'),
+    AppComponent.createSound('Dump it 📉 [full]', 'lowbudget-dumpit-full.mp3'),
+  ];
+
   @ViewChild('player') player!: ElementRef<HTMLAudioElement>;
 
   private isPlayingSub = new BehaviorSubject<boolean>(false);
@@ -40,18 +50,15 @@ export class AppComponent implements AfterViewInit {
   );
 
   currPlaying$ = combineLatest([this.isPlaying$, this.play$]).pipe(
-    debounceTime(20),
+    debounceTime(20), // avoid play/stop flickering
     map(([isPlaying, sound]) => isPlaying ? sound : undefined),
     shareReplay(1)
   );
 
-  sounds: Sound[] = [
-    AppComponent.createSound('Alert ⚠️', 'lowbudget-alert.mp3'),
-    AppComponent.createSound('Woooowww 🎉', 'lowbudget-wow.mp3'),
-    AppComponent.createSound('AAAAAAAA 🤬️', 'lowbudget-waaaa.mp3'),
-    AppComponent.createSound('Dump it (full)', 'lowbudget-dumpit-full.mp3'),
-    AppComponent.createSound('Dump it 📉', 'lowbudget-dumpit.mp3'),
-  ];
+  escape$ = fromEvent(document, 'keyup').pipe(
+    filter(e => (e as KeyboardEvent).key === 'Escape'),
+    tap(() => this.stop())
+  );
 
   static createSound(name: string, fileName: string): Sound {
     return {name, path: `assets/audio/${fileName}`};
@@ -83,9 +90,10 @@ export class AppComponent implements AfterViewInit {
     return new Promise(resolve => resolve());
   }
 
-  pause(): void {
+  stop(): void {
     if (this.isPlayingSub.value) {
       this.player.nativeElement.pause();
+      this.player.nativeElement.currentTime = 0;
     }
   }
 }
