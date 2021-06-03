@@ -14,8 +14,8 @@ export class AppComponent implements AfterViewInit {
   isolatedSounds: Sound[] = [
     AppComponent.createSound('Checkout 🤑', 'checkout.mp3'),
     AppComponent.createSound('Woooowww 🎉', 'wow.mp3'),
-    AppComponent.createSound('AAAAAAAA 😱️', 'waaaa.mp3'),
     AppComponent.createSound('WUT?! 😨️️️️', 'alert.mp3'),
+    AppComponent.createSound('AAAAAAAA 😱️', 'waaaa.mp3'),
     AppComponent.createSound('TumTum 📉️️️️', 'tumtumdown.mp3'),
     AppComponent.createSound('Dump it 📉', 'dumpit.mp3'),
     AppComponent.createSound('Did he buy le dip?', 'buysdip.mp3'),
