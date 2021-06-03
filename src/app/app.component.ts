@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import {BehaviorSubject, combineLatest, from, fromEvent, of, Subject} from 'rxjs';
+import {BehaviorSubject, combineLatest, EMPTY, from, fromEvent, Observable, of, Subject} from 'rxjs';
 import {debounceTime, filter, map, shareReplay, switchMap, take, tap} from 'rxjs/operators';
 
 @Component({
@@ -49,12 +49,12 @@ export class AppComponent implements AfterViewInit {
       }
 
       if (!isPlaying) {
-        return from(this.playAudio()).pipe(switchMap(() => of(sound)));
+        return this.playAudio().pipe(switchMap(() => of(sound)));
       }
 
       return this.isPlaying$.pipe(
         filter(_ => !_), take(1),
-        switchMap(() => from(this.playAudio()).pipe(switchMap(() => of(sound))))
+        switchMap(() => this.playAudio().pipe(switchMap(() => of(sound))))
       );
     }),
   );
@@ -99,12 +99,10 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  private playAudio(): Promise<void> {
-    if (!this.isPlayingSub.value) {
-      return this.player.nativeElement.play();
-    }
-
-    return new Promise(resolve => resolve());
+  private playAudio(): Observable<void> {
+    return of(this.isPlayingSub.value).pipe(
+      switchMap(isPlaying => !isPlaying ? from(this.player.nativeElement.play()) : EMPTY)
+    );
   }
 }
 
