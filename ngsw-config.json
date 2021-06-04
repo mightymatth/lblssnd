@@ -16,12 +16,22 @@
       }
     },
     {
+      "name": "assets/audio",
+      "installMode": "lazy",
+      "resources": {
+        "files": [
+          "/assets/audio/**"
+        ]
+      }
+    },
+    {
       "name": "assets",
       "installMode": "lazy",
       "updateMode": "prefetch",
       "resources": {
         "files": [
           "/assets/**",
+          "!/assets/audio/**",
           "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
         ]
       }
