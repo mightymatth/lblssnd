@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import {BehaviorSubject, combineLatest, EMPTY, from, fromEvent, Observable, of, Subject} from 'rxjs';
-import {debounceTime, filter, map, shareReplay, switchMap, take, tap} from 'rxjs/operators';
+import {animationFrameScheduler, BehaviorSubject, combineLatest, EMPTY, from, fromEvent, interval, Observable, of, Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged, filter, map, shareReplay, switchMap, take, takeWhile, tap} from 'rxjs/operators';
 import {SwUpdate} from '@angular/service-worker';
 
 @Component({
@@ -11,6 +11,7 @@ import {SwUpdate} from '@angular/service-worker';
 export class AppComponent implements AfterViewInit {
   constructor(private updates: SwUpdate) {
   }
+
   isolatedSounds: Sound[] = [
     AppComponent.createSound('Checkout 🤑', 'checkout.mp3'),
     AppComponent.createSound('Woooowww 🎉', 'wow.mp3'),
@@ -68,6 +69,16 @@ export class AppComponent implements AfterViewInit {
     shareReplay(1)
   );
 
+  private timeUpdateSub = new BehaviorSubject<void>(undefined);
+  timeUpdate$ = this.timeUpdateSub.pipe(
+    map(() => this.player.nativeElement.currentTime),
+    distinctUntilChanged(),
+    switchMap(currentTime => this.simulateProgress(currentTime * 1000)),
+    map(time => [time / 1000, this.player.nativeElement.duration]),
+    map(([time, duration]) => time / duration),
+    filter(progress => progress >= 0 && progress <= 1),
+  );
+
   escape$ = fromEvent(document, 'keyup').pipe(
     filter(e => (e as KeyboardEvent).key === 'Escape'),
     tap(() => this.stop())
@@ -97,6 +108,10 @@ export class AppComponent implements AfterViewInit {
     this.player.nativeElement.onabort = () => {
       this.isPlayingSub.next(false);
     };
+
+    this.player.nativeElement.ontimeupdate = () => {
+      this.timeUpdateSub.next();
+    };
   }
 
   play(sound: Sound): void {
@@ -113,6 +128,26 @@ export class AppComponent implements AfterViewInit {
   private playAudio(): Observable<void> {
     return of(this.isPlayingSub.value).pipe(
       switchMap(isPlaying => !isPlaying ? from(this.player.nativeElement.play()) : EMPTY)
+    );
+  }
+
+  /**
+   * @private
+   * Simulate time updates with adding additional timestamps between
+   * two real timestamps emitted by HTMLAudioElement.
+   * @param currentTime [ms]represents the starting point of the simulation.
+   * @param targetOffset [ms] represents the predicted maximum amount of time until
+   *                     next refresh.
+   * @param rate [hit/s] represents the rate of simulated timestamp hits.
+   *
+   * @return time in millis
+   */
+  private simulateProgress(currentTime: number, targetOffset = 200, rate = 50): Observable<number> {
+    const refreshInterval = (1 / rate) * 1000;
+    const simulationStartTime = Date.now();
+    return interval(refreshInterval, animationFrameScheduler).pipe(
+      map(() => currentTime + (Date.now() - simulationStartTime)),
+      takeWhile(time => time < currentTime + targetOffset),
     );
   }
 }

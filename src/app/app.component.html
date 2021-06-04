@@ -1,8 +1,8 @@
-<div class="flex flex-col h-full max-w-5xl mx-auto font-mono">
-  <h1 class="text-center pt-4 text-blue-800 text-2xl">
+<div class="flex flex-col h-full max-w-5xl mx-auto font-mono text-blue-800">
+  <h1 class="text-center pt-4 text-2xl">
     Low Budget Stories
   </h1>
-  <h2 class="text-center pt-1 text-blue-800">
+  <h2 class="text-center pt-1">
     Sound Library
   </h2>
 
@@ -12,14 +12,23 @@
     </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 px-4 py-2 gap-2">
       <ng-container *ngFor="let sound of isolatedSounds">
-        <button class="relative bg-blue-400 text-white px-2 py-6 rounded lg:text-xl"
-                [class]="(currPlaying$ | async) === sound ? 'bg-green-500' : ''"
+        <button class="relative bg-blue-500 shadow-sm text-white px-2 py-6 rounded lg:text-xl
+        focus:outline-none focus:ring-2 focus:ring-blue-600
+        hover:ring-1 hover:ring-blue-600"
+                [class]="(currPlaying$ | async) === sound ? '!bg-green-500' : ''"
                 (click)="play(sound)">
           {{ sound.name }}
-          <button class="absolute top-1 right-1 rounded-full"
+          <button class="absolute top-1 right-1 rounded-full
+          focus:outline-none focus:ring-2 focus:ring-blue-600"
                   (click)="stop()" *ngIf="(currPlaying$ | async) === sound">
             <ng-container *ngTemplateOutlet="closeIcon"></ng-container>
           </button>
+          <ng-container *ngIf="(currPlaying$ | async) === sound">
+            <span class="absolute left-0 bottom-0 h-1 w-full bg-gray-400 z-40 rounded-b"></span>
+            <span class="absolute left-0 bottom-0 h-1 w-full bg-green-600 z-40 rounded-b rounded-r"
+                  [class]="(isPlaying$ | async) ? 'transition-all duration-75 ease-linear' : ''"
+                  [ngStyle]="{width: (timeUpdate$ | async)! * 100 + '%'}"></span>
+          </ng-container>
         </button>
       </ng-container>
     </div>
@@ -29,14 +38,23 @@
     </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 px-4 py-2 gap-2">
       <ng-container *ngFor="let sound of fullSounds">
-        <button class="relative bg-blue-400 text-white px-2 py-6 rounded lg:text-xl"
-                [class]="(currPlaying$ | async) === sound ? 'bg-green-500' : ''"
+        <button class="relative bg-blue-500 shadow-sm text-white px-2 py-6 rounded lg:text-xl
+        focus:outline-none focus:ring-2 focus:ring-blue-600
+        hover:ring-1 hover:ring-blue-600"
+                [class]="(currPlaying$ | async) === sound ? '!bg-green-500' : ''"
                 (click)="play(sound)">
           {{ sound.name }}
-          <button class="absolute top-1 right-1 rounded-full"
+          <button class="absolute top-1 right-1 rounded-full
+          focus:outline-none focus:ring-2 focus:ring-blue-600"
                   (click)="stop()" *ngIf="(currPlaying$ | async) === sound">
             <ng-container *ngTemplateOutlet="closeIcon"></ng-container>
           </button>
+          <ng-container *ngIf="(currPlaying$ | async) === sound">
+            <span class="absolute left-0 bottom-0 h-1 w-full bg-gray-400 z-40 rounded-b"></span>
+            <span class="absolute left-0 bottom-0 h-1 w-full bg-green-600 z-40 rounded-b rounded-r"
+                  [class]="(isPlaying$ | async) ? 'transition-all duration-75 ease-linear' : ''"
+                  [ngStyle]="{width: (timeUpdate$ | async)! * 100 + '%'}"></span>
+          </ng-container>
         </button>
       </ng-container>
     </div>
@@ -51,7 +69,7 @@
 <ng-container *ngIf="appUpdate$ | async"></ng-container>
 
 <ng-template #closeIcon>
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 border-transparent" viewBox="0 0 20 20" fill="currentColor">
     <path fill-rule="evenodd"
           d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
           clip-rule="evenodd"/>
