@@ -142,7 +142,7 @@ export class AppComponent implements AfterViewInit {
    *
    * @return time in millis
    */
-  private simulateProgress(currentTime: number, targetOffset = 200, rate = 50): Observable<number> {
+  private simulateProgress(currentTime: number, targetOffset = 250, rate = 50): Observable<number> {
     const refreshInterval = (1 / rate) * 1000;
     const simulationStartTime = Date.now();
     return interval(refreshInterval, animationFrameScheduler).pipe(
