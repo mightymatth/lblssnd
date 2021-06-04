@@ -16,7 +16,7 @@
                 [class]="(currPlaying$ | async) === sound ? 'bg-green-500' : ''"
                 (click)="play(sound)">
           {{ sound.name }}
-          <button class="absolute w-1 h-1 top-1 right-5 rounded-full"
+          <button class="absolute top-1 right-1 rounded-full"
                   (click)="stop()" *ngIf="(currPlaying$ | async) === sound">
             <ng-container *ngTemplateOutlet="closeIcon"></ng-container>
           </button>
@@ -33,7 +33,7 @@
                 [class]="(currPlaying$ | async) === sound ? 'bg-green-500' : ''"
                 (click)="play(sound)">
           {{ sound.name }}
-          <button class="absolute w-1 h-1 top-1 right-5 rounded-full"
+          <button class="absolute top-1 right-1 rounded-full"
                   (click)="stop()" *ngIf="(currPlaying$ | async) === sound">
             <ng-container *ngTemplateOutlet="closeIcon"></ng-container>
           </button>
