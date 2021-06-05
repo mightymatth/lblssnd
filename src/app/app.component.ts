@@ -26,25 +26,38 @@ export class AppComponent implements AfterViewInit {
   }
 
   isolatedSounds: Sound[] = [
+    AppComponent.createSound('❌ dip, ✅ sale', 'nodipitssale.mp3'),
+    AppComponent.createSound('Diamond hands 💎️', 'diamond.mp3'),
     AppComponent.createSound('Checkout 🤑', 'checkout.mp3'),
     AppComponent.createSound('Woooowww 🎉', 'wow.mp3'),
     AppComponent.createSound('WUT?! 😨️️️️', 'alert.mp3'),
     AppComponent.createSound('AAAAAAAA 😱️', 'waaaa.mp3'),
-    AppComponent.createSound('Diamond hands 💎️', 'diamond.mp3'),
+    AppComponent.createSound('Bigger sale 💰️️️', 'biggersale.mp3'),
     AppComponent.createSound('TumTum 📉️️️️', 'tumtumdown.mp3'),
     AppComponent.createSound('Dump it 📉', 'dumpit.mp3'),
     AppComponent.createSound('Did he buy le dip?', 'buysdip.mp3'),
-    AppComponent.createSound('Finish him', 'finishhim.mp3'),
-    AppComponent.createSound('Pocket money 💸', 'pocketmoney.mp3'),
+    AppComponent.createSound('Finish him 🚫', 'finishhim.mp3'),
     AppComponent.createSound('10%/toilet 🚽', '10perc-toilet.mp3'),
   ];
 
   fullSounds: Sound[] = [
     AppComponent.createSound('Checkout Woooowww 🤑🎉', 'checkoutwow.mp3'),
+
+    AppComponent.createSound('Diamond hands 💎️', 'diamond-full.mp3'),
+    AppComponent.createSound('Let\'s see if I made some money', 'letsseemoney.mp3'),
+    AppComponent.createSound('I should have waited! 🤯', 'ishwaited.mp3'),
+    AppComponent.createSound('Bought even lower 🤑️️', 'boughtevenlower.mp3'),
+    AppComponent.createSound('Bigger sale 💰️️️', 'biggersale-full.mp3'),
+    AppComponent.createSound('Great DCA️ 💲', 'greatdollarcostavg.mp3'),
+    AppComponent.createSound('Be/others ↔ fearful/greedy️', 'fearfulgreedy.mp3'),
+    AppComponent.createSound('I\'m not a baby, I\'m gonna do it! 👼', 'imnotababy.mp3'),
+
+    AppComponent.createSound('Price so low 💵', 'pricesolow.mp3'),
+    AppComponent.createSound('Pocket money 💸', 'pocketmoney.mp3'),
+
+    AppComponent.createSound('Addicted Jimmy', 'addictedijmmy.mp3'),
     AppComponent.createSound('Dump it 📉', 'dumpit-pokemon.mp3'),
     AppComponent.createSound('Buy le dip?', 'buysdip-finishhim.mp3'),
-    AppComponent.createSound('Diamond hands 💎️', 'diamond-full.mp3'),
-    AppComponent.createSound('Addicted Jimmy', 'addictedijmmy.mp3'),
   ];
 
   @ViewChild('player') player!: ElementRef<HTMLAudioElement>;
