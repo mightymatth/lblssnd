@@ -26,7 +26,6 @@
           <ng-container *ngIf="(currPlaying$ | async) === sound">
             <span class="absolute left-0 bottom-0 h-1 w-full bg-gray-400 z-40 rounded-b"></span>
             <span class="absolute left-0 bottom-0 h-1 w-full bg-green-600 z-40 rounded-b rounded-r"
-                  [class]="(isPlaying$ | async) ? 'transition-all duration-75 ease-linear' : ''"
                   [ngStyle]="{width: (timeUpdate$ | async)! * 100 + '%'}"></span>
           </ng-container>
         </button>
@@ -52,7 +51,6 @@
           <ng-container *ngIf="(currPlaying$ | async) === sound">
             <span class="absolute left-0 bottom-0 h-1 w-full bg-gray-400 z-40 rounded-b"></span>
             <span class="absolute left-0 bottom-0 h-1 w-full bg-green-600 z-40 rounded-b rounded-r"
-                  [class]="(isPlaying$ | async) ? 'transition-all duration-75 ease-linear' : ''"
                   [ngStyle]="{width: (timeUpdate$ | async)! * 100 + '%'}"></span>
           </ng-container>
         </button>

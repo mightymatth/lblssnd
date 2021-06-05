@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {animationFrameScheduler, BehaviorSubject, combineLatest, EMPTY, from, fromEvent, interval, Observable, of, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, map, shareReplay, switchMap, take, takeWhile, tap} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter, map, pairwise, shareReplay, switchMap, take, takeWhile, tap,} from 'rxjs/operators';
 import {SwUpdate} from '@angular/service-worker';
 
 @Component({
@@ -72,6 +72,8 @@ export class AppComponent implements AfterViewInit {
   private timeUpdateSub = new BehaviorSubject<void>(undefined);
   timeUpdate$ = this.timeUpdateSub.pipe(
     map(() => this.player.nativeElement.currentTime),
+    pairwise(),
+    map(([prev, curr]) => prev <= curr || curr === 0 ? curr : prev),
     distinctUntilChanged(),
     switchMap(currentTime => this.simulateProgress(currentTime * 1000)),
     map(time => [time / 1000, this.player.nativeElement.duration]),
@@ -135,18 +137,20 @@ export class AppComponent implements AfterViewInit {
    * @private
    * Simulate time updates with adding additional timestamps between
    * two real timestamps emitted by HTMLAudioElement.
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/timeupdate_event
+   *
    * @param currentTime [ms]represents the starting point of the simulation.
    * @param targetOffset [ms] represents the predicted maximum amount of time until
    *                     next refresh.
-   * @param rate [hit/s] represents the rate of simulated timestamp hits.
    *
-   * @return time in millis
+   * @return time [ms]
    */
-  private simulateProgress(currentTime: number, targetOffset = 250, rate = 50): Observable<number> {
-    const refreshInterval = (1 / rate) * 1000;
+  private simulateProgress(currentTime: number, targetOffset = 250): Observable<number> {
     const simulationStartTime = Date.now();
-    return interval(refreshInterval, animationFrameScheduler).pipe(
+    return interval(0, animationFrameScheduler).pipe(
       map(() => currentTime + (Date.now() - simulationStartTime)),
+      distinctUntilChanged(),
       takeWhile(time => time < currentTime + targetOffset),
     );
   }
