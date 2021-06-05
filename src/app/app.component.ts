@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, ViewChild} from '@angular/core';
 import {animationFrameScheduler, BehaviorSubject, combineLatest, EMPTY, from, fromEvent, interval, Observable, of, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, map, pairwise, shareReplay, switchMap, take, takeWhile, tap,} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter, map, pairwise, shareReplay, switchMap, take, takeWhile, tap} from 'rxjs/operators';
 import {SwUpdate} from '@angular/service-worker';
 
 @Component({
@@ -18,6 +18,7 @@ export class AppComponent implements AfterViewInit {
     AppComponent.createSound('Woooowww 🎉', 'wow.mp3'),
     AppComponent.createSound('WUT?! 😨️️️️', 'alert.mp3'),
     AppComponent.createSound('AAAAAAAA 😱️', 'waaaa.mp3'),
+    AppComponent.createSound('Diamond hands 💎️', 'diamond.mp3'),
     AppComponent.createSound('TumTum 📉️️️️', 'tumtumdown.mp3'),
     AppComponent.createSound('Dump it 📉', 'dumpit.mp3'),
     AppComponent.createSound('Did he buy le dip?', 'buysdip.mp3'),
@@ -29,7 +30,8 @@ export class AppComponent implements AfterViewInit {
   fullSounds: Sound[] = [
     AppComponent.createSound('Checkout Woooowww 🤑🎉', 'checkoutwow.mp3'),
     AppComponent.createSound('Dump it 📉 [full]', 'dumpit-pokemon.mp3'),
-    AppComponent.createSound('Buy le dip [full]', 'buysdip-finishhim.mp3'),
+    AppComponent.createSound('Buy le dip? [full]', 'buysdip-finishhim.mp3'),
+    AppComponent.createSound('Diamond hands [full] 💎️', 'diamond-full.mp3'),
     AppComponent.createSound('Addicted Jimmy', 'addictedijmmy.mp3'),
   ];
 
