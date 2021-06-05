@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, ViewChild} from '@angular/core';
 import {animationFrameScheduler, BehaviorSubject, combineLatest, EMPTY, from, fromEvent, interval, Observable, of, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map, pairwise, shareReplay, switchMap, take, takeWhile, tap,} from 'rxjs/operators';
 import {SwUpdate} from '@angular/service-worker';
@@ -6,7 +6,8 @@ import {SwUpdate} from '@angular/service-worker';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements AfterViewInit {
   constructor(private updates: SwUpdate) {
