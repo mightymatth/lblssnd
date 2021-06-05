@@ -1,5 +1,17 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, ViewChild} from '@angular/core';
-import {animationFrameScheduler, BehaviorSubject, combineLatest, EMPTY, from, fromEvent, interval, Observable, of, Subject} from 'rxjs';
+import {
+  animationFrameScheduler,
+  BehaviorSubject,
+  combineLatest,
+  EMPTY,
+  from,
+  fromEvent,
+  interval,
+  Observable,
+  of,
+  Subject,
+  timer
+} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map, pairwise, shareReplay, switchMap, take, takeWhile, tap} from 'rxjs/operators';
 import {SwUpdate} from '@angular/service-worker';
 
@@ -29,9 +41,9 @@ export class AppComponent implements AfterViewInit {
 
   fullSounds: Sound[] = [
     AppComponent.createSound('Checkout Woooowww 🤑🎉', 'checkoutwow.mp3'),
-    AppComponent.createSound('Dump it 📉 [full]', 'dumpit-pokemon.mp3'),
-    AppComponent.createSound('Buy le dip? [full]', 'buysdip-finishhim.mp3'),
-    AppComponent.createSound('Diamond hands [full] 💎️', 'diamond-full.mp3'),
+    AppComponent.createSound('Dump it 📉', 'dumpit-pokemon.mp3'),
+    AppComponent.createSound('Buy le dip?', 'buysdip-finishhim.mp3'),
+    AppComponent.createSound('Diamond hands 💎️', 'diamond-full.mp3'),
     AppComponent.createSound('Addicted Jimmy', 'addictedijmmy.mp3'),
   ];
 
@@ -90,10 +102,8 @@ export class AppComponent implements AfterViewInit {
   );
 
   appUpdate$ = this.updates.available.pipe(
-    switchMap(() => {
-      window.alert('New version available. The app will be reloaded.');
-      return from(this.updates.activateUpdate());
-    }),
+    map(() => window.alert('New version available. The app will be reloaded.')),
+    switchMap(() => from(this.updates.activateUpdate())),
     tap(() => document.location.reload())
   );
 
@@ -117,6 +127,10 @@ export class AppComponent implements AfterViewInit {
     this.player.nativeElement.ontimeupdate = () => {
       this.timeUpdateSub.next();
     };
+
+    timer(2000).pipe(
+      switchMap(() => this.updates.checkForUpdate())
+    ).subscribe();
   }
 
   play(sound: Sound): void {
