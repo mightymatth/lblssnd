@@ -11,52 +11,20 @@
       Short
     </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 px-4 py-2 gap-2">
-      <ng-container *ngFor="let sound of isolatedSounds">
-        <button class="relative bg-blue-500 shadow-sm text-white px-2 py-6 rounded lg:text-xl
-        focus:outline-none focus:ring-2 focus:ring-blue-600
-        hover:ring-1 hover:ring-blue-600"
-                [class]="(currPlaying$ | async) === sound ? '!bg-green-500' : ''"
-                (click)="play(sound)">
-          {{ sound.name }}
-          <button class="absolute top-1 right-1 rounded-full
-          focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  (click)="stop()" *ngIf="(currPlaying$ | async) === sound">
-            <ng-container *ngTemplateOutlet="closeIcon"></ng-container>
-          </button>
-          <ng-container *ngIf="(currPlaying$ | async) === sound">
-            <div class="absolute left-0 bottom-0 h-1 w-full bg-gray-400 z-40 rounded-b"></div>
-            <div class="absolute left-0 bottom-0 h-1 w-full bg-green-600 z-40 rounded-b rounded-r"
-                 [class]="(isPlaying$ | async) ? 'transition-all duration-75 ease-linear' : 'transition-none'"
-                 [style.width]="(timeUpdate$ | async)! * 100 + '%'"></div>
-          </ng-container>
-        </button>
-      </ng-container>
+      <div *ngFor="let sound of isolatedSounds" class="relative">
+        <ng-container *ngTemplateOutlet="soundButton; context: {sound: sound}">
+        </ng-container>
+      </div>
     </div>
 
     <h3 class="px-4 py-2 text-sm sticky top-0 z-10 bg-white">
       Long
     </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 px-4 py-2 gap-2">
-      <ng-container *ngFor="let sound of fullSounds">
-        <button class="relative bg-blue-500 shadow-sm text-white px-2 py-6 rounded lg:text-xl
-        focus:outline-none focus:ring-2 focus:ring-blue-600
-        hover:ring-1 hover:ring-blue-600"
-                [class]="(currPlaying$ | async) === sound ? '!bg-green-500' : ''"
-                (click)="play(sound)">
-          {{ sound.name }}
-          <button class="absolute top-1 right-1 rounded-full
-          focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  (click)="stop()" *ngIf="(currPlaying$ | async) === sound">
-            <ng-container *ngTemplateOutlet="closeIcon"></ng-container>
-          </button>
-          <ng-container *ngIf="(currPlaying$ | async) === sound">
-            <div class="absolute left-0 bottom-0 h-1 w-full bg-gray-400 z-40 rounded-b"></div>
-            <div class="absolute left-0 bottom-0 h-1 w-full bg-green-600 z-40 rounded-b rounded-r"
-                 [class]="(isPlaying$ | async) ? 'transition-all duration-75 ease-linear' : 'transition-none'"
-                 [style.width]="(timeUpdate$ | async)! * 100 + '%'"></div>
-          </ng-container>
-        </button>
-      </ng-container>
+      <div *ngFor="let sound of fullSounds" class="relative">
+        <ng-container *ngTemplateOutlet="soundButton; context: {sound: sound}">
+        </ng-container>
+      </div>
     </div>
   </main>
 </div>
@@ -68,8 +36,35 @@
 <ng-container *ngIf="escape$ | async"></ng-container>
 <ng-container *ngIf="appUpdate$ | async"></ng-container>
 
+<ng-template #soundButton let-sound="sound">
+  <button class="w-full h-full bg-blue-500 shadow-sm text-white px-2 py-6 rounded lg:text-xl
+        focus:outline-none focus:ring-2 focus:ring-blue-600
+        hover:ring-1 hover:ring-blue-600"
+          [class]="(currPlaying$ | async) === sound ? '!bg-green-500' : ''"
+          (click)="play(sound)">
+    {{ sound.name }}
+  </button>
+
+  <!-- stop button -->
+  <button class="absolute top-1 right-1 rounded-full
+        focus:outline-none focus:ring-2 focus:ring-blue-600"
+          (click)="stop()" *ngIf="(currPlaying$ | async) === sound">
+    <ng-container *ngTemplateOutlet="closeIcon"></ng-container>
+  </button>
+
+  <!-- progress bar -->
+  <ng-container *ngIf="(currPlaying$ | async) === sound">
+    <div class="absolute left-0 bottom-0 h-1 w-full bg-gray-400 rounded-b"></div>
+    <div class="absolute left-0 bottom-0 h-1 w-full bg-green-600 rounded-b rounded-r
+          transition-none"
+         [class]="(isPlaying$ | async) ? 'transition-all duration-75 ease-linear' : ''"
+         [style.width]="(timeUpdate$ | async)! * 100 + '%'"></div>
+  </ng-container>
+</ng-template>
+
 <ng-template #closeIcon>
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 border-transparent" viewBox="0 0 20 20" fill="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 border-transparent fill-current text-white"
+       viewBox="0 0 20 20" fill="currentColor">
     <path fill-rule="evenodd"
           d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
           clip-rule="evenodd"/>

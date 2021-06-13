@@ -142,6 +142,7 @@ export class AppComponent implements AfterViewInit {
     };
 
     timer(2000).pipe(
+      filter(() => this.updates.isEnabled),
       switchMap(() => this.updates.checkForUpdate())
     ).subscribe();
   }
