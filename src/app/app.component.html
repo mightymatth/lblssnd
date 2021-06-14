@@ -26,7 +26,34 @@
         </ng-container>
       </div>
     </div>
+
+    <div class="flex flex-col px-4 my-2 items-center">
+      <h4 class="text-xs">
+        Like it? I like some cold beers too. 🍻🍻
+      </h4>
+
+      <a href="https://en.cryptobadges.io/donate/0x9a72aD187229e9338c7f21E019544947Fb25d473"
+         class="mt-1" rel="noopener noreferrer" target="_blank">
+        <img src="https://en.cryptobadges.io/badge/big/0x9a72aD187229e9338c7f21E019544947Fb25d473?showBalance=true"
+             alt="Donate Ethereum">
+      </a>
+    </div>
   </main>
+
+  <footer>
+    <div class="px-4 py-2">
+      <small>
+        The source code is <a class="underline" href="https://github.com/mightymatth/lbssnd"
+                              rel="noopener noreferrer" target="_blank">here</a>.
+        Written in <a class="underline" href="https://angular.io/"
+                      rel="noopener noreferrer" target="_blank">Angular</a>,
+        styled with <a class="underline" href="https://tailwindcss.com/"
+                       rel="noopener noreferrer" target="_blank">TailwindCSS</a>,
+        hosted by <a class="underline" href="https://pages.github.com/"
+                     rel="noopener noreferrer" target="_blank">GitHub Pages</a>.
+      </small>
+    </div>
+  </footer>
 </div>
 
 <audio #player class="invisible">
@@ -49,7 +76,12 @@
   <button class="absolute top-1 right-1 rounded-full
         focus:outline-none focus:ring-2 focus:ring-blue-600"
           (click)="stop()" *ngIf="(currPlaying$ | async) === sound">
-    <ng-container *ngTemplateOutlet="closeIcon"></ng-container>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 border-transparent fill-current text-white"
+         viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+            clip-rule="evenodd"/>
+    </svg>
   </button>
 
   <!-- progress bar -->
@@ -60,13 +92,4 @@
          [class]="(isPlaying$ | async) ? 'transition-all duration-75 ease-linear' : ''"
          [style.width]="(timeUpdate$ | async)! * 100 + '%'"></div>
   </ng-container>
-</ng-template>
-
-<ng-template #closeIcon>
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 border-transparent fill-current text-white"
-       viewBox="0 0 20 20" fill="currentColor">
-    <path fill-rule="evenodd"
-          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-          clip-rule="evenodd"/>
-  </svg>
 </ng-template>

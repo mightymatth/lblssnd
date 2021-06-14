@@ -27,3 +27,9 @@ npm run build
 # serve and open in a browser
 npm run serve-build
 ```
+
+---
+
+#### Like it? I like some cold beers too. 🍻🍻
+
+[![Donate with Ethereum](https://en.cryptobadges.io/badge/big/0x9a72aD187229e9338c7f21E019544947Fb25d473?showBalance=true)](https://en.cryptobadges.io/donate/0x9a72aD187229e9338c7f21E019544947Fb25d473)
