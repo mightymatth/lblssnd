@@ -133,7 +133,7 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
-            "baseHref": "/lbssnd/",
+            "cname": "lowbudget.biz",
             "name": "Matija Pevec",
             "email": "pevec@live.com"
           }
