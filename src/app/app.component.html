@@ -61,7 +61,12 @@
 
 <ng-container *ngIf="play$ | async"></ng-container>
 <ng-container *ngIf="escape$ | async"></ng-container>
-<ng-container *ngIf="appUpdate$ | async"></ng-container>
+
+<ng-container *ngIf="updates.isEnabled">
+  <ng-container *ngIf="checkForUpdate$ | async"></ng-container>
+  <ng-container *ngIf="appUpdate$ | async"></ng-container>
+  <ng-container *ngIf="unrecoverable$ | async"></ng-container>
+</ng-container>
 
 <ng-template #soundButton let-sound="sound">
   <button class="w-full h-full bg-blue-500 shadow-sm text-white px-2 py-6 rounded lg:text-xl
