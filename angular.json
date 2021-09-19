@@ -48,7 +48,14 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": {
+                "scripts": true,
+                "fonts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                }
+              },
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -128,14 +135,6 @@
             "production": {
               "devServerTarget": "lbssnd:serve:production"
             }
-          }
-        },
-        "deploy": {
-          "builder": "angular-cli-ghpages:deploy",
-          "options": {
-            "cname": "lowbudget.biz",
-            "name": "Matija Pevec",
-            "email": "pevec@live.com"
           }
         }
       }

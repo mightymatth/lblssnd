@@ -1,18 +1,31 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, ElementRef, ViewChild} from '@angular/core';
 import {
   animationFrameScheduler,
   BehaviorSubject,
   combineLatest,
+  concat,
+  defer,
   EMPTY,
   from,
   fromEvent,
   interval,
   Observable,
   of,
-  Subject,
-  timer
+  Subject
 } from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, map, pairwise, shareReplay, switchMap, take, takeWhile, tap} from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  first,
+  map,
+  pairwise,
+  shareReplay,
+  switchMap,
+  take,
+  takeWhile,
+  tap
+} from 'rxjs/operators';
 import {SwUpdate} from '@angular/service-worker';
 
 @Component({
@@ -22,7 +35,8 @@ import {SwUpdate} from '@angular/service-worker';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements AfterViewInit {
-  constructor(private updates: SwUpdate) {
+  constructor(public updates: SwUpdate,
+              private appRef: ApplicationRef) {
   }
 
   isolatedSounds: Sound[] = [
@@ -120,6 +134,19 @@ export class AppComponent implements AfterViewInit {
     tap(() => document.location.reload())
   );
 
+  checkForUpdate$ = defer(() => {
+    const appIsStable$ = this.appRef.isStable.pipe(first(isStable => isStable));
+    const interval$ = interval(20 * 60 * 1000);
+    return concat(appIsStable$, interval$);
+  }).pipe(
+    tap(() => this.updates.checkForUpdate()),
+  );
+
+  unrecoverable$ = this.updates.unrecoverable.pipe(
+    tap(event => console.error('unrecoverable', event.reason)),
+    tap(() => document.location.reload()),
+  );
+
   static createSound(name: string, fileName: string): Sound {
     return {name, path: `assets/audio/${fileName}`};
   }
@@ -140,11 +167,6 @@ export class AppComponent implements AfterViewInit {
     this.player.nativeElement.ontimeupdate = () => {
       this.timeUpdateSub.next();
     };
-
-    timer(2000).pipe(
-      filter(() => this.updates.isEnabled),
-      switchMap(() => this.updates.checkForUpdate())
-    ).subscribe();
   }
 
   play(sound: Sound): void {
